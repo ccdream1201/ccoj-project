@@ -1,0 +1,27 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: ccoj-judge-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRESS:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD}
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        prefetch: 1
+        default-requeue-rejected: false
+sandbox:
+  base-url: ${CCOJ_SANDBOX_URL:http://localhost:8081}
+
+ccoj:
+  protection:
+    sandbox-circuit-enabled: ${CCOJ_SANDBOX_CIRCUIT_ENABLED:true}
+    judge-retry-enabled: ${CCOJ_JUDGE_RETRY_ENABLED:true}

@@ -1,0 +1,56 @@
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+  "account": "jccCode",
+  "password": "12345678"
+}
+
+###
+POST http://localhost:8080/problem/add
+Content-Type: application/json
+
+{
+  "title": "两数之和",
+  "description": "输入两个整数 a 和 b，输出它们的和。\n输入格式：一行两个整数，以空格分隔。\n输出格式：输出一个整数，表示 a+b。\n数据范围：-1000000000 ≤ a,b ≤ 1000000000。",
+  "difficulty": 1,
+  "samples": [
+    {
+      "input": "1 2\n",
+      "output": "3\n"
+    }
+  ],
+  "judgeCases": [
+    {
+      "input": "10 20\n",
+      "output": "30\n"
+    },
+    {
+      "input": "-1 1\n",
+      "output": "0\n"
+    },
+    {
+      "input": "-5 -7\n",
+      "output": "-12\n"
+    },
+    {
+      "input": "1000000000 1000000000\n",
+      "output": "2000000000\n"
+    }
+  ],
+  "judgeConfig": {
+    "timeLimit": 1000,
+    "memoryLimit": 256,
+    "stackLimit": 64
+  },
+  "solution": null
+}
+
+### 发布题目（将 1 换成创建接口返回的 data）
+PATCH http://localhost:8080/problem/1/publish
+
+### 查询公开题目
+GET http://localhost:8080/problem
+
+### 查询题目详情
+GET http://localhost:8080/problem/1

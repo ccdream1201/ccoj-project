@@ -1,0 +1,11 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent><groupId>com.cc</groupId><artifactId>ccoj</artifactId><version>0.0.1-SNAPSHOT</version></parent>
+    <artifactId>ccoj-service-client</artifactId>
+    <dependencies>
+        <dependency><groupId>com.cc</groupId><artifactId>ccoj-common</artifactId><version>${project.version}</version></dependency>
+        <dependency><groupId>com.cc</groupId><artifactId>ccoj-model</artifactId><version>${project.version}</version></dependency>
+        <dependency><groupId>org.springframework</groupId><artifactId>spring-web</artifactId></dependency>
+        <dependency><groupId>org.springframework.cloud</groupId><artifactId>spring-cloud-starter-loadbalancer</artifactId></dependency>
+    </dependencies>
+</project>

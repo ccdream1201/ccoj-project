@@ -1,0 +1,133 @@
+name: ccoj-local
+
+x-discovery: &discovery
+  NACOS_ADDRESS: nacos:8848
+  NACOS_USERNAME: nacos
+  NACOS_PASSWORD: local-only
+
+x-data: &data
+  CCOJ_DB_URL: jdbc:mysql://mysql:3306/ccoj
+  CCOJ_DB_USERNAME: ccoj
+  CCOJ_DB_PASSWORD: ccoj-local-db
+  REDIS_HOST: redis
+  CCOJ_INTERNAL_KEY: ${CCOJ_INTERNAL_KEY:-ccoj-compose-local-only}
+  CCOJ_API_DOCS_ENABLED: ${CCOJ_API_DOCS_ENABLED:-true}
+
+x-rabbit: &rabbit
+  RABBITMQ_HOST: rabbitmq
+  RABBITMQ_USERNAME: ccoj
+  RABBITMQ_PASSWORD: ccoj-local-mq
+
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ccoj
+      MYSQL_USER: ccoj
+      MYSQL_PASSWORD: ccoj-local-db
+      MYSQL_ROOT_PASSWORD: ccoj-local-root
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, 'mysql -h 127.0.0.1 -u "$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE" -e "SELECT 1 FROM submission LIMIT 1" >/dev/null 2>&1']
+      interval: 3s
+      timeout: 4s
+      retries: 40
+
+  redis:
+    image: redis:7.4
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    environment:
+      RABBITMQ_DEFAULT_USER: ccoj
+      RABBITMQ_DEFAULT_PASS: ccoj-local-mq
+    volumes:
+      - rabbit-data:/var/lib/rabbitmq
+    healthcheck:
+      test: [CMD, rabbitmq-diagnostics, -q, check_port_connectivity]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  nacos:
+    image: nacos/nacos-server:v3.1.1
+    environment:
+      MODE: standalone
+      NACOS_AUTH_ENABLE: 'false'
+      NACOS_AUTH_TOKEN: Y2Nvai1sb2NhbC1jb21wb3NlLWtleS1mb3ItZGV2LW9ubHk=
+      NACOS_AUTH_IDENTITY_KEY: ccoj-local
+      NACOS_AUTH_IDENTITY_VALUE: ccoj-local-only
+    healthcheck:
+      test: [CMD-SHELL, 'curl -fsS http://127.0.0.1:8848/nacos/v3/admin/core/state >/dev/null']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  gateway:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+      args: { SERVICE: ccoj-gateway }
+    environment:
+      <<: [*discovery, *data]
+      CCOJ_SUBMIT_LIMIT_ENABLED: ${CCOJ_SUBMIT_LIMIT_ENABLED:-true}
+      CCOJ_SUBMIT_QPS: ${CCOJ_SUBMIT_QPS:-2}
+      CCOJ_LOGIN_QPS: ${CCOJ_LOGIN_QPS:-5}
+      CCOJ_REGISTER_QPS: ${CCOJ_REGISTER_QPS:-2}
+      CCOJ_PROBLEM_QUERY_QPS: ${CCOJ_PROBLEM_QUERY_QPS:-30}
+    ports:
+      - 127.0.0.1:${CCOJ_GATEWAY_PORT:-18080}:8080
+    depends_on:
+      nacos: { condition: service_healthy }
+
+  user:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+      args: { SERVICE: ccoj-user-service }
+    environment:
+      <<: [*discovery, *data]
+    depends_on:
+      mysql: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      nacos: { condition: service_healthy }
+
+  problem:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+      args: { SERVICE: ccoj-problem-service }
+    environment:
+      <<: [*discovery, *data, *rabbit]
+      CCOJ_JUDGE_RETRY_ENABLED: ${CCOJ_JUDGE_RETRY_ENABLED:-true}
+    depends_on:
+      mysql: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      rabbitmq: { condition: service_healthy }
+      nacos: { condition: service_healthy }
+
+  judge:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile
+      args: { SERVICE: ccoj-judge-service }
+    environment:
+      <<: [*discovery, *rabbit]
+      CCOJ_INTERNAL_KEY: ${CCOJ_INTERNAL_KEY:-ccoj-compose-local-only}
+      CCOJ_SANDBOX_URL: ${CCOJ_SANDBOX_URL:-http://host.docker.internal:8081}
+      CCOJ_SANDBOX_CIRCUIT_ENABLED: ${CCOJ_SANDBOX_CIRCUIT_ENABLED:-true}
+      CCOJ_JUDGE_RETRY_ENABLED: ${CCOJ_JUDGE_RETRY_ENABLED:-true}
+    depends_on:
+      rabbitmq: { condition: service_healthy }
+      nacos: { condition: service_healthy }
+
+volumes:
+  mysql-data:
+  rabbit-data:

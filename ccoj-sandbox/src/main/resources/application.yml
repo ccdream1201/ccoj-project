@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: ccoj-sandbox
+
+server:
+  address: ${CCOJ_SANDBOX_BIND:127.0.0.1}
+  port: 8081
+
+sandbox:
+  mode: ${CCOJ_SANDBOX_MODE:docker}
+  docker:
+    executable: ${CCOJ_DOCKER_EXECUTABLE:docker}
+    image: ${CCOJ_SANDBOX_IMAGE:eclipse-temurin:21-jdk-jammy}

@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: ccoj-problem-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${CCOJ_DB_URL:jdbc:mysql://localhost:3306/ccoj}
+    username: ${CCOJ_DB_USERNAME:root}
+    password: ${CCOJ_DB_PASSWORD:}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      database: 0
+      connect-timeout: 3s
+      timeout: 3s
+  session:
+    timeout: 30m
+    data:
+      redis:
+        namespace: ccoj:session
+        repository-type: indexed
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRESS:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD}
+
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+server:
+  port: 8001
+  servlet:
+    session:
+      cookie:
+        name: CCOJ_SESSION
+        path: /
+        http-only: true
+        same-site: lax
+
+springdoc:
+  api-docs:
+    version: openapi_3_0
+    enabled: ${CCOJ_API_DOCS_ENABLED:false}
+    path: /problem/docs/openapi
+  paths-to-match:
+    - /problem/**
+    - /submission/**
+  paths-to-exclude:
+    - /inner/**
+  override-with-generic-response: false
+
+ccoj:
+  protection:
+    judge-retry-enabled: ${CCOJ_JUDGE_RETRY_ENABLED:true}

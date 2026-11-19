@@ -1,0 +1,8 @@
+# Only for the disposable acceptance project.
+services:
+  problem:
+    ports:
+      - '127.0.0.1:18101:8001'
+  rabbitmq:
+    ports:
+      - '127.0.0.1:18172:15672'

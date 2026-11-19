@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: gateway
+  web:
+    resources:
+      add-mappings: false
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRESS:localhost:8848}
+        username: ${NACOS_USERNAME:nacos}
+        password: ${NACOS_PASSWORD}
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service-route
+              uri: lb://ccoj-user-service
+              predicates:
+                - Path=/user/**
+
+            - id: problem-service-route
+              uri: lb://ccoj-problem-service
+              predicates:
+                - Path=/problem/**,/submission/**
+
+server:
+  port: 8080
+
+ccoj:
+  api-docs:
+    enabled: ${CCOJ_API_DOCS_ENABLED:false}
+
+  protection:
+    submit-limit-enabled: ${CCOJ_SUBMIT_LIMIT_ENABLED:true}
+    submit-qps: ${CCOJ_SUBMIT_QPS:2}
+    login-qps: ${CCOJ_LOGIN_QPS:5}
+    register-qps: ${CCOJ_REGISTER_QPS:2}
+    problem-query-qps: ${CCOJ_PROBLEM_QUERY_QPS:30}

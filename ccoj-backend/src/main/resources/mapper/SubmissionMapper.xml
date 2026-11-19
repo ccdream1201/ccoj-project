@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.ccojbackend.mapper.SubmissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.cc.ccojbackend.model.entity.Submission">
+            <id property="id" column="id" />
+            <result property="problemId" column="problem_id" />
+            <result property="userId" column="user_id" />
+            <result property="language" column="language" />
+            <result property="sourceCode" column="source_code" />
+            <result property="status" column="status" />
+            <result property="judgeInfo" column="judge_info" />
+            <result property="passedCaseCount" column="passed_case_count" />
+            <result property="totalCaseCount" column="total_case_count" />
+            <result property="compileOutput" column="compile_output" />
+            <result property="isDeleted" column="is_deleted" />
+            <result property="createdAt" column="created_at" />
+            <result property="updatedAt" column="updated_at" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,problem_id,user_id,language,source_code,status,
+        judge_info,passed_case_count,total_case_count,compile_output,
+        is_deleted,created_at,updated_at
+    </sql>
+</mapper>

@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:8080
+
+POST {{baseUrl}}/user/login
+Content-Type: application/json
+
+{
+  "account": "jccCode",
+  "password": "12345678"
+}
+
+###
+GET {{baseUrl}}/user/current
+Content-Type: application/json
+
+{
+}
+
+###
+POST {{baseUrl}}/user/register
+Content-Type: application/json
+
+{
+  "account": "jccCode2",
+  "password": "12345678",
+  "confirmPassword": "12345678"
+}

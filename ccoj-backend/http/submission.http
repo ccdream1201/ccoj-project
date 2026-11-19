@@ -1,0 +1,11 @@
+POST http://localhost:8080/submission/judge
+Content-Type: application/json
+
+{
+  "problemId": 1,
+  "sourceCode": "import java.util.Scanner;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        int a = scanner.nextInt();\n        int b = scanner.nextInt();\n        System.out.println(a + b);\n    }\n}",
+  "language": "JAVA"
+}
+
+### 查询提交结果（将 1 换成提交响应中 data.id 的值）
+GET http://localhost:8080/submission/1

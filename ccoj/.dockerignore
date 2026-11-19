@@ -1,0 +1,6 @@
+**
+!ccoj-*/
+!ccoj-*/target/
+!ccoj-*/target/*-0.0.1-SNAPSHOT.jar
+!deploy/
+!deploy/Dockerfile

@@ -1,0 +1,145 @@
+{
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "query response valid": {
+                    "name": "query response valid",
+                    "path": "::query response valid",
+                    "id": "799d9342d8dfe4d8eb6cd49859cb9136",
+                    "passes": 2000,
+                    "fails": 0
+                }
+            }
+    },
+    "metrics": {
+        "query_429": {
+            "count": 1670,
+            "rate": 163.5256381390231
+        },
+        "query_admitted_http_ms": {
+            "avg": 16.01432851818182,
+            "med": 12.061687500000001,
+            "p(95)": 51.3709625,
+            "p(99)": 55.37060403,
+            "max": 56.112
+        },
+        "http_req_tls_handshaking": {
+            "p(95)": 0,
+            "p(99)": 0,
+            "max": 0,
+            "avg": 0,
+            "med": 0
+        },
+        "iterations": {
+            "count": 2000,
+            "rate": 195.83908759164441
+        },
+        "http_req_receiving": {
+            "avg": 0.057418928499999994,
+            "med": 0.023875,
+            "p(95)": 0.17845209999999986,
+            "p(99)": 0.7469324999999994,
+            "max": 3.052416
+        },
+        "checks": {
+            "passes": 2000,
+            "fails": 0,
+            "thresholds": {
+                "rate==1": false
+            },
+            "value": 1
+        },
+        "unexpected_result": {
+            "passes": 0,
+            "fails": 2000,
+            "thresholds": {
+                "rate==0": false
+            },
+            "value": 0
+        },
+        "data_sent": {
+            "count": 180000,
+            "rate": 17625.517883247998
+        },
+        "http_req_failed": {
+            "passes": 0,
+            "fails": 2000,
+            "value": 0
+        },
+        "http_req_blocked": {
+            "p(99)": 0.9183587499999998,
+            "max": 1.225458,
+            "avg": 0.026670873499999883,
+            "med": 0.0029795,
+            "p(95)": 0.013213099999999993
+        },
+        "vus_max": {
+            "max": 50,
+            "value": 50,
+            "min": 50
+        },
+        "query_admitted": {
+            "count": 330,
+            "rate": 32.31344945262133
+        },
+        "vus": {
+            "value": 50,
+            "min": 50,
+            "max": 50
+        },
+        "data_received": {
+            "count": 613030,
+            "rate": 60027.61793315289
+        },
+        "http_req_duration": {
+            "avg": 3.964006108000006,
+            "med": 1.0018125,
+            "p(95)": 20.370968449999967,
+            "p(99)": 50.00872958999999,
+            "max": 56.112
+        },
+        "http_req_sending": {
+            "p(99)": 0.16301832999999996,
+            "max": 1.1795,
+            "avg": 0.015335616499999958,
+            "med": 0.007333,
+            "p(95)": 0.040208
+        },
+        "http_req_connecting": {
+            "p(95)": 0,
+            "p(99)": 0.3230562499999997,
+            "max": 0.620167,
+            "avg": 0.006150312000000001,
+            "med": 0
+        },
+        "http_reqs": {
+            "count": 2000,
+            "rate": 195.83908759164441
+        },
+        "http_req_duration{expected_response:true}": {
+            "avg": 3.964006108000006,
+            "med": 1.0018125,
+            "p(95)": 20.370968449999967,
+            "p(99)": 50.00872958999999,
+            "max": 56.112
+        },
+        "http_req_waiting": {
+            "avg": 3.891251563000006,
+            "med": 0.9475210000000001,
+            "p(95)": 19.95517919999998,
+            "p(99)": 49.578815829999996,
+            "max": 56.059083
+        },
+        "iteration_duration": {
+            "p(95)": 271.16941934999994,
+            "p(99)": 302.54699658,
+            "max": 307.588126,
+            "avg": 254.85249446099948,
+            "med": 252.015042
+        }
+    },
+    "setup_data": {}
+}
